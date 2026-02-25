@@ -106,6 +106,13 @@ Read the codebase. Identify:
 - **Connections** (which components talk to which, and how)
 - **Layers** (group related components into rows or zones)
 
+**When a sample diagram is provided** (ASCII art, text mockup, screenshot, etc.):
+- **Preserve ALL text and detail from the sample by default.** Do not simplify, summarize, or omit labels, annotations, bullet points, or sublabels present in the sample.
+- Extract every node's full text (titles, subtitles, tool names, metrics, details) and reproduce it verbatim in shape labels using `\n` for multiline.
+- Preserve section headers, status annotations (e.g. "Fail = Stop & Notify"), and arrow labels exactly as written.
+- Size boxes large enough to fit the full text (increase height/width beyond defaults as needed).
+- The sample is the **source of truth** for content — you may improve layout, colors, and styling, but never drop information.
+
 ### Step 2: Read the Design Guide
 
 ```
@@ -131,12 +138,13 @@ Before calling any create tool, sketch the layout mentally:
 Vertical flow (most common):
   Row 1 (y=0):    Zone backgrounds (large dashed rectangles)
   Row 2 (y=60):   Entry points / Users
-  Row 3 (y=240):  Middle layer (APIs, services)
-  Row 4 (y=480):  Data layer (databases, storage)
+  Row 3 (y=350):  Middle layer (APIs, services)
+  Row 4 (y=650):  Data layer (databases, storage)
 
-  Columns: x = 40, 280, 520  (spaced 240px apart)
-  Box size: 200 x 70 (standard)  |  160 x 80 (for decision diamonds)
-  Spacing between rows: ~140px gap after accounting for box height
+  Columns: x = 40, 440, 840  (spaced 400px apart for labeled arrows)
+  Box size: 230 x 160 (standard)  |  200 x 120 (for decision diamonds)
+  Spacing between rows: ~200px gap after accounting for box height
+  Spacing between boxes in a row: 180px gap (for arrow labels)
 ```
 
 ### Step 5: Create Everything in One Batch
@@ -355,17 +363,29 @@ Shows a parameter traced through 5 layers with split/converge paths, decision no
 
 ## Sizing Rules
 
+**Err on the side of too much space.** Tight spacing is the #1 mistake — arrows and their labels get hidden when boxes are too close. When in doubt, double the gap you think you need. Diagrams that feel "too spread out" in your head almost always look right on screen.
+
+**CRITICAL: Arrow labels need ~120px of clear space between boxes to be visible.** If an arrow has a text label (e.g. "auto deploy", "All pass"), the gap between the two connected boxes MUST be at least 150px. Arrows without labels still need 100px minimum.
+
 | Property | Value | Why |
 |----------|-------|-----|
-| Box width | 160-200px | Fits 2-line labels comfortably |
-| Box height | 60-80px | Enough for title + subtitle |
-| Column spacing | 240px | 200px box + 40px gap |
-| Row spacing | 140-160px | 70px box + 70px gap for arrows |
+| Box width | 200-240px | Fits multiline labels with breathing room |
+| Box height | 120-160px | Fits 3-4 line labels comfortably |
+| Horizontal gap (labeled arrows) | **150-200px** | Arrow labels are ~80-120px wide, need clearance on both sides |
+| Horizontal gap (unlabeled arrows) | 100-120px | Just the arrow line + breathing room |
+| Column spacing (labeled) | 400px | 220px box + 180px gap |
+| Column spacing (unlabeled) | 340px | 220px box + 120px gap |
+| Row spacing | 280-350px | 150px box + 150px gap for arrows + annotations |
 | Font size (labels) | 16px | Default, readable |
 | Font size (titles) | 20-24px | Stands out as header |
 | Font size (zone labels) | 14px | Subtle, doesn't compete |
-| Zone opacity | 30-40 | Background, not foreground |
-| Arrow gap between shapes | 80px minimum | Room for labels |
+| Zone opacity | 25-40 | Background, not foreground |
+| Zone padding | 50-60px around children | Zone borders must NOT hug inner boxes |
+| Section header to box gap | 40px | Headers need clearance from boxes below |
+
+**Zone sizing rule:** Calculate zone dimensions as: leftmost child x - 50 to rightmost child x + child width + 60 (horizontal), topmost child y - 55 to bottommost child y + child height + 60 (vertical). Always verify the zone fully wraps ALL children with visible padding on every side.
+
+**Arrow visibility test:** Before finalizing, mentally check every labeled arrow — if the label text is longer than half the gap between boxes, increase the gap. Common offenders: "auto deploy", "rollback on failure", "All pass" — these labels are 80-150px wide and get clipped when gaps are <150px.
 
 ---
 
@@ -376,14 +396,14 @@ Shows a parameter traced through 5 layers with split/converge paths, decision no
 ```
 Title (y = -40)
 
-[Zone 1: y=0, height=160]
-  [Box A: x=40]    [Box B: x=280]    [Box C: x=520]
+[Zone 1: y=0, height=260]
+  [Box A: x=40]    [Box B: x=440]    [Box C: x=840]
 
-[Zone 2: y=200, height=160]
-  [Box D: x=40]    [Box E: x=280]
+[Zone 2: y=350, height=260]
+  [Box D: x=40]    [Box E: x=440]
 
-[Zone 3: y=400, height=160]
-  [Box F: x=160]
+[Zone 3: y=700, height=260]
+  [Box F: x=240]
 ```
 
 Arrows flow **top to bottom**. Cross-layer arrows use dashed style.
@@ -392,10 +412,10 @@ Arrows flow **top to bottom**. Cross-layer arrows use dashed style.
 
 ```
 [Source] ──► [Transform 1] ──► [Transform 2] ──► [Output]
-  x=40        x=280             x=520             x=760
+  x=40        x=440             x=840             x=1240
 ```
 
-All at same `y`. Arrows flow **left to right**.
+All at same `y`. Arrows flow **left to right**. Use 400px column spacing for labeled arrows, 340px for unlabeled.
 
 ### Hub and Spoke
 
@@ -499,6 +519,7 @@ Place a gray-background rectangle (top-right, `x: 460`) with 3-4 text items expl
 | Diagram too cluttered | Split into multiple diagrams, or use `create_from_mermaid` for quick drafts |
 | Arrows cross messily | Rearrange shapes so related ones are adjacent. Vertical flow reduces crossings |
 | Annotations overlap with flow | Use 3-column layout: labels (x<0), flow (x:60-360), annotations (x:570+) |
+| Lost detail from sample diagram | Sample is source of truth for content. Reproduce ALL text verbatim — titles, subtitles, tool lists, metrics, annotations. Size boxes larger if needed |
 
 ---
 
