@@ -17,29 +17,39 @@ A Claude Code skill for generating architecture diagrams on a live Excalidraw ca
 
 ## Examples
 
+Each example shows the same prompt rendered two ways: **Markdown** (auto-generated from `create_from_mermaid`) vs **Excalidraw** (native canvas with `batch_create_elements`). Same input, different output quality.
+
 ### Microservices Architecture
 
 > *"Draw a microservices architecture with: React frontend, API Gateway, Auth Service, User Service, Order Service, a RabbitMQ message queue, PostgreSQL database, and Redis cache. Use vertical flow layout."*
 
-![Microservices Architecture](examples/microservices.png)
+| Markdown | Excalidraw |
+|:---:|:---:|
+| ![Markdown](examples/microservices-markdown.png) | ![Excalidraw](examples/microservices-excalidraw.png) |
 
 ### CI/CD Pipeline
 
 > *"Draw a CI/CD pipeline: Developer pushes to GitHub, triggers GitHub Actions, which runs lint, test, build stages, then deploys to staging, runs E2E tests, and promotes to production. Horizontal pipeline layout."*
 
-![CI/CD Pipeline](examples/cicd-pipeline.png)
+| Markdown | Excalidraw |
+|:---:|:---:|
+| ![Markdown](examples/cicd-pipeline-markdown.png) | ![Excalidraw](examples/cicd-pipeline-excalidraw.png) |
 
 ### Event-Driven System
 
 > *"Draw an event-driven architecture with a central Kafka event bus. Producers: Payment Service, Order Service, User Service. Consumers: Notification Service, Analytics Service, Audit Logger. Hub-and-spoke layout."*
 
-![Event-Driven System](examples/event-driven.png)
+| Markdown | Excalidraw |
+|:---:|:---:|
+| ![Markdown](examples/event-driven-markdown.png) | ![Excalidraw](examples/event-driven-excalidraw.png) |
 
 ### Data Pipeline
 
 > *"Draw a data pipeline: data ingested from REST API and S3 bucket, processed by Apache Spark, stored in a data lake, transformed by dbt, loaded into Snowflake warehouse, served to a Grafana dashboard. Horizontal flow."*
 
-![Data Pipeline](examples/data-pipeline.png)
+| Markdown | Excalidraw |
+|:---:|:---:|
+| ![Markdown](examples/data-pipeline-markdown.png) | ![Excalidraw](examples/data-pipeline-excalidraw.png) |
 
 ## Installation
 
