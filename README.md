@@ -71,9 +71,11 @@ Each example shows the same prompt rendered two ways: **Markdown** (auto-generat
 
 ## Prerequisites
 
-This skill requires the **Excalidraw MCP server** ([yctimlin/mcp_excalidraw](https://github.com/yctimlin/mcp_excalidraw)).
+This skill requires an **Excalidraw MCP server**. The default is [yctimlin/mcp_excalidraw](https://github.com/yctimlin/mcp_excalidraw), but any MCP server that exposes compatible tools will work (see [Compatible MCP Servers](#compatible-mcp-servers) below).
 
-**If you installed via plugin marketplace**, the MCP server is auto-registered — skip to step 2.
+**Important:** The server must be registered under the key `"excalidraw"` — the skill calls `mcp__excalidraw__*` tools, and this prefix is derived from the registration key name.
+
+**If you installed via plugin marketplace**, the default MCP server is auto-registered — skip to the Canvas Server section.
 
 **If you installed manually**, add this to your Claude Code MCP config:
 
@@ -192,11 +194,32 @@ The skill knows four layout strategies and picks the right one for your diagram:
 | `skills/excalidraw/SKILL.md` | Main skill — workflow, examples, layout patterns, sizing rules |
 | `skills/excalidraw/references/colors.md` | Color palettes for default, AWS, Azure, GCP, Kubernetes |
 
+## Compatible MCP Servers
+
+Any Excalidraw MCP server that exposes the core tools will work. The key tools this skill requires:
+
+| Tool | Usage |
+|------|-------|
+| `batch_create_elements` | Create all shapes + arrows (required) |
+| `get_canvas_screenshot` | Visual verification (required) |
+| `read_diagram_guide` | Load color/sizing rules |
+| `export_to_image` | PNG/SVG export |
+| `create_from_mermaid` | Mermaid conversion |
+
+Known compatible servers:
+
+| Package | Tools | Install |
+|---------|-------|---------|
+| [`mcp-excalidraw-server`](https://github.com/yctimlin/mcp_excalidraw) (default) | 26 — full coverage | `npx -y mcp-excalidraw-server` |
+| [`excalidraw-mcp-server`](https://github.com/debu-sinha/excalidraw-mcp-server) | 16 — covers core set | `npx -y excalidraw-mcp-server` |
+
+To use a different server, register it under the key `"excalidraw"` in your Claude Code MCP config.
+
 ## Requirements
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
-- [Excalidraw MCP server](https://github.com/yctimlin/mcp_excalidraw) (`mcp-excalidraw-server` on npm) + canvas server running
-- A browser with the Excalidraw canvas open
+- An Excalidraw MCP server registered as `"excalidraw"` (see [Compatible MCP Servers](#compatible-mcp-servers))
+- A browser with the Excalidraw canvas open (for servers that require it)
 
 ## Credits
 
