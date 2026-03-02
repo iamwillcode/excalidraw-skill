@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "excalidraw": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-excalidraw-server"
+      ],
+      "env": {
+        "EXPRESS_SERVER_URL": "http://localhost:3000"
+      }
+    }
+  }
+}

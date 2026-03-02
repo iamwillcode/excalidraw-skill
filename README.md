@@ -71,18 +71,41 @@ Each example shows the same prompt rendered two ways: **Markdown** (auto-generat
 
 ## Prerequisites
 
-This skill requires the **Excalidraw MCP server** to be running. Add it to your Claude Code MCP config:
+This skill requires the **Excalidraw MCP server** ([yctimlin/mcp_excalidraw](https://github.com/yctimlin/mcp_excalidraw)).
+
+**If you installed via plugin marketplace**, the MCP server is auto-registered — skip to step 2.
+
+**If you installed manually**, add this to your Claude Code MCP config:
 
 ```json
 {
   "excalidraw": {
     "command": "npx",
-    "args": ["@pinkpixel/excalidraw-mcp"]
+    "args": ["-y", "mcp-excalidraw-server"],
+    "env": {
+      "EXPRESS_SERVER_URL": "http://localhost:3000"
+    }
   }
 }
 ```
 
-Then open the canvas URL printed in the server logs. The canvas must be open in a browser for screenshots and image export to work.
+### Canvas Server (Required)
+
+The MCP server connects to a live Excalidraw canvas. You must start the canvas server before using the skill:
+
+**Option A — Docker (recommended):**
+```bash
+docker run -d -p 3000:3000 ghcr.io/yctimlin/mcp_excalidraw-canvas:latest
+```
+
+**Option B — From source:**
+```bash
+git clone https://github.com/yctimlin/mcp_excalidraw.git
+cd mcp_excalidraw && npm ci && npm run build
+HOST=0.0.0.0 PORT=3000 npm run canvas
+```
+
+Then open `http://localhost:3000` in your browser. The canvas must stay open for screenshots and image export to work.
 
 ## Usage
 
@@ -172,7 +195,7 @@ The skill knows four layout strategies and picks the right one for your diagram:
 ## Requirements
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
-- [Excalidraw MCP server](https://www.npmjs.com/package/@pinkpixel/excalidraw-mcp) running and connected
+- [Excalidraw MCP server](https://github.com/yctimlin/mcp_excalidraw) (`mcp-excalidraw-server` on npm) + canvas server running
 - A browser with the Excalidraw canvas open
 
 ## Credits
